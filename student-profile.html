@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLink - Student Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.875rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            color: #64748b;
+            font-size: 1.25rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 1.5rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .nav-item.active {
+            background: #eff6ff;
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        .profile-header {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-meta span {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .profile-stat .label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .profile-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .grades-table th,
+        .grades-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+        }
+
+        .grades-table th {
+            background: #f8fafc;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-align: center;
+            min-width: 24px;
+        }
+
+        .grade-a {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .grade-b {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .attendance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .attendance-item:last-child {
+            border-bottom: none;
+        }
+
+        .attendance-date {
+            font-weight: 500;
+        }
+
+        .attendance-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-present {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-absent {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .status-late {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .contact-icon {
+            width: 32px;
+            height: 32px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+
+        .contact-details h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.125rem;
+        }
+
+        .contact-details p {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">
+                <span>EduLink</span>
+                <span class="logo-subtitle">Connecting Education</span>
+            </div>
+        </div>
+        
+        <div class="header-controls">
+            <select class="header-select">
+                <option>Advanced Database Systems - CS401</option>
+                <option>Web Development - CS301</option>
+                <option>Data Structures - CS201</option>
+            </select>
+            <select class="header-select">
+                <option>Spring 2025</option>
+                <option>Fall 2024</option>
+                <option>Summer 2024</option>
+            </select>
+        </div>
+        
+        <div class="user-info">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop&crop=face" alt="Prof. Sarah Wilson" class="user-avatar">
+                <div class="user-details">
+                    <h4>Prof. Sarah Wilson</h4>
+                    <p>Computer Science Dept.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="overview.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Courses Overview</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-star"></i>
+                <span>Grades Management</span>
+            </a>
+            <a href="attendance.html" class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Attendance QR</span>
+            </a>
+            <a href="students.html" class="nav-item active">
+                <i class="fas fa-users"></i>
+                <span>Students List</span>
+            </a>
+            <a href="notifications.html" class="nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Send Notifications</span>
+            </a>
+            <a href="add-course.html" class="nav-item">
+                <i class="fas fa-plus"></i>
+                <span>Add New Course</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <a href="students.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Students List
+            </a>
+
+            <div class="profile-header">
+                <img src="https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop&crop=face" alt="John Smith" class="profile-avatar" id="profileAvatar">
+                <div class="profile-info">
+                    <h1 id="profileName">John Smith</h1>
+                    <div class="profile-meta">
+                        <span id="profileId">Student ID: CS2025001</span>
+                        <span id="profileEmail">Email: john.smith@university.edu</span>
+                        <span id="profileMajor">Major: Computer Science</span>
+                        <span id="profileYear">Year: Junior</span>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="value" id="overallGrade">A</div>
+                            <div class="label">Overall Grade</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="value" id="attendanceRate">95%</div>
+                            <div class="label">Attendance</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="value" id="coursesEnrolled">3</div>
+                            <div class="label">Courses</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Grades
+                    </h2>
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Score</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gradesTableBody">
+                            <tr>
+                                <td>Midterm Exam</td>
+                                <td>85/100</td>
+                                <td><span class="grade-badge grade-b">B+</span></td>
+                            </tr>
+                            <tr>
+                                <td>Final Exam</td>
+                                <td>92/100</td>
+                                <td><span class="grade-badge grade-a">A-</span></td>
+                            </tr>
+                            <tr>
+                                <td>Assignments</td>
+                                <td>88/100</td>
+                                <td><span class="grade-badge grade-b">B+</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="profile-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-calendar-check"></i>
+                        Recent Attendance
+                    </h2>
+                    <div id="attendanceList">
+                        <div class="attendance-item">
+                            <span class="attendance-date">March 15, 2025</span>
+                            <span class="attendance-status status-present">Present</span>
+                        </div>
+                        <div class="attendance-item">
+                            <span class="attendance-date">March 13, 2025</span>
+                            <span class="attendance-status status-present">Present</span>
+                        </div>
+                        <div class="attendance-item">
+                            <span class="attendance-date">March 11, 2025</span>
+                            <span class="attendance-status status-late">Late</span>
+                        </div>
+                        <div class="attendance-item">
+                            <span class="attendance-date">March 8, 2025</span>
+                            <span class="attendance-status status-present">Present</span>
+                        </div>
+                        <div class="attendance-item">
+                            <span class="attendance-date">March 6, 2025</span>
+                            <span class="attendance-status status-absent">Absent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section full-width">
+                    <h2 class="section-title">
+                        <i class="fas fa-address-book"></i>
+                        Contact Information
+                    </h2>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Email Address</h4>
+                                <p id="contactEmail">john.smith@university.edu</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Phone Number</h4>
+                                <p id="contactPhone">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Address</h4>
+                                <p id="contactAddress">123 University Ave, College Town, ST 12345</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Emergency Contact</h4>
+                                <p id="emergencyContact">Jane Smith (Mother) - +1 (555) 987-6543</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Get student ID from URL parameters
+        function getStudentIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id') || 'CS2025001';
+        }
+
+        // Load student profile data
+        async function loadStudentProfile() {
+            const studentId = getStudentIdFromUrl();
+            
+            try {
+                const response = await fetch(`/api/students/${studentId}`);
+                const student = await response.json();
+                updateProfileDisplay(student);
+            } catch (error) {
+                console.error('Error loading student profile:', error);
+                // Use default data if API fails
+                loadDefaultProfile(studentId);
+            }
+        }
+
+        function loadDefaultProfile(studentId) {
+            const defaultProfiles = {
+                'CS2025001': {
+                    name: 'John Smith',
+                    id: 'CS2025001',
+                    email: 'john.smith@university.edu',
+                    major: 'Computer Science',
+                    year: 'Junior',
+                    avatar: 'https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop&crop=face',
+                    overallGrade: 'A',
+                    attendanceRate: '95%',
+                    coursesEnrolled: 3,
+                    phone: '+1 (555) 123-4567',
+                    address: '123 University Ave, College Town, ST 12345',
+                    emergencyContact: 'Jane Smith (Mother) - +1 (555) 987-6543'
+                },
+                'CS2025002': {
+                    name: 'Emma Johnson',
+                    id: 'CS2025002',
+                    email: 'emma.johnson@university.edu',
+                    major: 'Computer Science',
+                    year: 'Senior',
+                    avatar: 'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop&crop=face',
+                    overallGrade: 'B+',
+                    attendanceRate: '89%',
+                    coursesEnrolled: 4,
+                    phone: '+1 (555) 234-5678',
+                    address: '456 College St, University City, ST 12346',
+                    emergencyContact: 'Robert Johnson (Father) - +1 (555) 876-5432'
+                },
+                'CS2025003': {
+                    name: 'Michael Brown',
+                    id: 'CS2025003',
+                    email: 'michael.brown@university.edu',
+                    major: 'Computer Science',
+                    year: 'Sophomore',
+                    avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop&crop=face',
+                    overallGrade: 'A-',
+                    attendanceRate: '92%',
+                    coursesEnrolled: 3,
+                    phone: '+1 (555) 345-6789',
+                    address: '789 Student Blvd, Campus Town, ST 12347',
+                    emergencyContact: 'Lisa Brown (Mother) - +1 (555) 765-4321'
+                }
+            };
+
+            const student = defaultProfiles[studentId] || defaultProfiles['CS2025001'];
+            updateProfileDisplay(student);
+        }
+
+        function updateProfileDisplay(student) {
+            document.getElementById('profileAvatar').src = student.avatar;
+            document.getElementById('profileName').textContent = student.name;
+            document.getElementById('profileId').textContent = `Student ID: ${student.id}`;
+            document.getElementById('profileEmail').textContent = `Email: ${student.email}`;
+            document.getElementById('profileMajor').textContent = `Major: ${student.major}`;
+            document.getElementById('profileYear').textContent = `Year: ${student.year}`;
+            document.getElementById('overallGrade').textContent = student.overallGrade;
+            document.getElementById('attendanceRate').textContent = student.attendanceRate;
+            document.getElementById('coursesEnrolled').textContent = student.coursesEnrolled;
+            document.getElementById('contactEmail').textContent = student.email;
+            document.getElementById('contactPhone').textContent = student.phone;
+            document.getElementById('contactAddress').textContent = student.address;
+            document.getElementById('emergencyContact').textContent = student.emergencyContact;
+        }
+
+        // Load profile on page load
+        document.addEventListener('DOMContentLoaded', loadStudentProfile);
+    </script>
+</body>
+</html>

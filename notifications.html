@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLink - Send Notifications</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.875rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            color: #64748b;
+            font-size: 1.25rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 1.5rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .nav-item.active {
+            background: #eff6ff;
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .notification-form {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .form-select,
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .form-select:focus,
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .recent-notifications {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-message {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .notification-date {
+            color: #94a3b8;
+            font-size: 0.75rem;
+        }
+
+        .notification-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-sent {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-scheduled {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">
+                <span>EduLink</span>
+                <span class="logo-subtitle">Connecting Education</span>
+            </div>
+        </div>
+        
+        <div class="header-controls">
+            <select class="header-select">
+                <option>Advanced Database Systems - CS401</option>
+                <option>Web Development - CS301</option>
+                <option>Data Structures - CS201</option>
+            </select>
+            <select class="header-select">
+                <option>Spring 2025</option>
+                <option>Fall 2024</option>
+                <option>Summer 2024</option>
+            </select>
+        </div>
+        
+        <div class="user-info">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop&crop=face" alt="Prof. Sarah Wilson" class="user-avatar">
+                <div class="user-details">
+                    <h4>Prof. Sarah Wilson</h4>
+                    <p>Computer Science Dept.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="overview.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Courses Overview</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-star"></i>
+                <span>Grades Management</span>
+            </a>
+            <a href="attendance.html" class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Attendance QR</span>
+            </a>
+            <a href="students.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Students List</span>
+            </a>
+            <a href="notifications.html" class="nav-item active">
+                <i class="fas fa-bell"></i>
+                <span>Send Notifications</span>
+            </a>
+            <a href="add-course.html" class="nav-item">
+                <i class="fas fa-plus"></i>
+                <span>Add New Course</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Send Notifications</h1>
+                <p class="page-subtitle">Send announcements and updates to your students</p>
+            </div>
+
+            <div class="notification-form">
+                <form id="notificationForm">
+                    <div class="form-group">
+                        <label for="notificationType" class="form-label">Notification Type</label>
+                        <select id="notificationType" class="form-select">
+                            <option value="general">General Announcement</option>
+                            <option value="assignment">Assignment Reminder</option>
+                            <option value="exam">Exam Schedule</option>
+                            <option value="grade">Grade Update</option>
+                            <option value="urgent">Urgent Notice</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notificationRecipients" class="form-label">Recipients</label>
+                        <select id="notificationRecipients" class="form-select">
+                            <option value="all">All Students</option>
+                            <option value="current">Current Course Only</option>
+                            <option value="selected">Selected Students</option>
+                            <option value="absent">Students with Low Attendance</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notificationTitle" class="form-label">Title</label>
+                        <input type="text" id="notificationTitle" class="form-input" placeholder="Enter notification title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notificationMessage" class="form-label">Message</label>
+                        <textarea id="notificationMessage" class="form-textarea" rows="6" placeholder="Enter your message here..." required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn" onclick="saveDraft()">
+                            <i class="fas fa-save"></i>
+                            Save Draft
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Notification
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="recent-notifications">
+                <h3 class="section-title">Recent Notifications</h3>
+                <div id="notificationsList">
+                    <div class="notification-item">
+                        <div class="notification-content">
+                            <h4 class="notification-title">Assignment 3 Due Reminder</h4>
+                            <p class="notification-message">Don't forget to submit your database design assignment by Friday at 11:59 PM.</p>
+                            <span class="notification-date">2 hours ago</span>
+                        </div>
+                        <span class="notification-status status-sent">Sent</span>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-content">
+                            <h4 class="notification-title">Midterm Exam Schedule</h4>
+                            <p class="notification-message">The midterm exam will be held on March 20th at 2:00 PM in Room 101. Please bring your student ID and calculator.</p>
+                            <span class="notification-date">1 day ago</span>
+                        </div>
+                        <span class="notification-status status-sent">Sent</span>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-content">
+                            <h4 class="notification-title">Class Cancelled - March 18th</h4>
+                            <p class="notification-message">Due to unforeseen circumstances, today's class has been cancelled. We will resume on March 20th.</p>
+                            <span class="notification-date">3 days ago</span>
+                        </div>
+                        <span class="notification-status status-sent">Sent</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('notificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            sendNotification();
+        });
+
+        // Send notification function
+        async function sendNotification() {
+            const formData = {
+                type: document.getElementById('notificationType').value,
+                recipients: document.getElementById('notificationRecipients').value,
+                title: document.getElementById('notificationTitle').value,
+                message: document.getElementById('notificationMessage').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Validate form
+            if (!formData.title.trim() || !formData.message.trim()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            try {
+                // Send to backend
+                const response = await fetch('/api/notifications', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Notification sent successfully!');
+                    
+                    // Add to recent notifications
+                    addToRecentNotifications(formData);
+                    
+                    // Clear form
+                    clearForm();
+                } else {
+                    throw new Error('Failed to send notification');
+                }
+            } catch (error) {
+                console.error('Error sending notification:', error);
+                alert('Error sending notification. Please try again.');
+            }
+        }
+
+        // Save draft function
+        async function saveDraft() {
+            const formData = {
+                type: document.getElementById('notificationType').value,
+                recipients: document.getElementById('notificationRecipients').value,
+                title: document.getElementById('notificationTitle').value,
+                message: document.getElementById('notificationMessage').value,
+                status: 'draft',
+                timestamp: new Date().toISOString()
+            };
+
+            if (!formData.title.trim() && !formData.message.trim()) {
+                alert('Please enter some content before saving draft');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/notifications/draft', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Draft saved successfully!');
+                    addToRecentNotifications(formData, 'draft');
+                } else {
+                    throw new Error('Failed to save draft');
+                }
+            } catch (error) {
+                console.error('Error saving draft:', error);
+                alert('Error saving draft. Please try again.');
+            }
+        }
+
+        // Add notification to recent list
+        function addToRecentNotifications(notification, status = 'sent') {
+            const notificationsList = document.getElementById('notificationsList');
+            const timeAgo = 'Just now';
+            
+            const notificationItem = document.createElement('div');
+            notificationItem.className = 'notification-item';
+            notificationItem.innerHTML = `
+                <div class="notification-content">
+                    <h4 class="notification-title">${notification.title}</h4>
+                    <p class="notification-message">${notification.message}</p>
+                    <span class="notification-date">${timeAgo}</span>
+                </div>
+                <span class="notification-status status-${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span>
+            `;
+            
+            // Insert at the beginning
+            notificationsList.insertBefore(notificationItem, notificationsList.firstChild);
+            
+            // Remove last item if more than 10
+            if (notificationsList.children.length > 10) {
+                notificationsList.removeChild(notificationsList.lastChild);
+            }
+        }
+
+        // Clear form
+        function clearForm() {
+            document.getElementById('notificationTitle').value = '';
+            document.getElementById('notificationMessage').value = '';
+            document.getElementById('notificationType').selectedIndex = 0;
+            document.getElementById('notificationRecipients').selectedIndex = 0;
+        }
+
+        // Load recent notifications
+        async function loadRecentNotifications() {
+            try {
+                const response = await fetch('/api/notifications/recent');
+                const notifications = await response.json();
+                renderNotifications(notifications);
+            } catch (error)  {
+                console.error('Error loading notifications:', error);
+            }
+        }
+
+        function renderNotifications(notifications) {
+            const notificationsList = document.getElementById('notificationsList');
+            notificationsList.innerHTML = notifications.map(notification => `
+                <div class="notification-item">
+                    <div class="notification-content">
+                        <h4 class="notification-title">${notification.title}</h4>
+                        <p class="notification-message">${notification.message}</p>
+                        <span class="notification-date">${notification.timeAgo}</span>
+                    </div>
+                    <span class="notification-status status-${notification.status}">${notification.status.charAt(0).toUpperCase() + notification.status.slice(1)}</span>
+                </div>
+            `).join('');
+        }
+
+        // Auto-save draft functionality
+        let autoSaveTimeout;
+        function setupAutoSave() {
+            const titleInput = document.getElementById('notificationTitle');
+            const messageInput = document.getElementById('notificationMessage');
+            
+            [titleInput, messageInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(() => {
+                        if (titleInput.value.trim() || messageInput.value.trim()) {
+                            console.log('Auto-saving draft...');
+                            // Could implement auto-save here
+                        }
+                    }, 5000); // Auto-save after 5 seconds of inactivity
+                });
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecentNotifications();
+            setupAutoSave();
+        });
+    </script>
+</body>
+</html>

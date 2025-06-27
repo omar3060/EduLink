@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLink - Grades Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.875rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            color: #64748b;
+            font-size: 1.25rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 1.5rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .nav-item.active {
+            background: #eff6ff;
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .components-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .component-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .component-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .component-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .component-weight {
+            background: #3b82f6;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .component-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-outline {
+            border: 2px dashed #cbd5e1;
+            color: #64748b;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .grade-sheet {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .sheet-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .grade-table th {
+            background: #f8fafc;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .grade-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+        }
+
+        .grade-input {
+            width: 60px;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .grade-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-align: center;
+            min-width: 24px;
+        }
+
+        .grade-a {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .grade-b {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .grade-c {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .grade-f {
+            background: #fecaca;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">
+                <span>EduLink</span>
+                <span class="logo-subtitle">Connecting Education</span>
+            </div>
+        </div>
+        
+        <div class="header-controls">
+            <select class="header-select" id="courseSelect">
+                <option>Advanced Database Systems - CS401</option>
+                <option>Web Development - CS301</option>
+                <option>Data Structures - CS201</option>
+            </select>
+            <select class="header-select" id="semesterSelect">
+                <option>Spring 2025</option>
+                <option>Fall 2024</option>
+                <option>Summer 2024</option>
+            </select>
+        </div>
+        
+        <div class="user-info">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop&crop=face" alt="Prof. Sarah Wilson" class="user-avatar">
+                <div class="user-details">
+                    <h4>Prof. Sarah Wilson</h4>
+                    <p>Computer Science Dept.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="overview.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Courses Overview</span>
+            </a>
+            <a href="index.html" class="nav-item active">
+                <i class="fas fa-star"></i>
+                <span>Grades Management</span>
+            </a>
+            <a href="attendance.html" class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Attendance QR</span>
+            </a>
+            <a href="students.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Students List</span>
+            </a>
+            <a href="notifications.html" class="nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Send Notifications</span>
+            </a>
+            <a href="add-course.html" class="nav-item">
+                <i class="fas fa-plus"></i>
+                <span>Add New Course</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Grade Components</h1>
+            </div>
+
+            <!-- Components Section -->
+            <div class="components-section">
+                <div class="components-grid">
+                    <div class="component-card">
+                        <div class="component-header">
+                            <h3 class="component-title">Midterm Exam</h3>
+                            <span class="component-weight">30%</span>
+                        </div>
+                        <div class="component-actions">
+                            <button class="btn" onclick="editComponent('midterm')">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn" onclick="uploadGrades('midterm')">
+                                <i class="fas fa-upload"></i>
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <div class="component-header">
+                            <h3 class="component-title">Final Exam</h3>
+                            <span class="component-weight">40%</span>
+                        </div>
+                        <div class="component-actions">
+                            <button class="btn" onclick="editComponent('final')">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn" onclick="uploadGrades('final')">
+                                <i class="fas fa-upload"></i>
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <div class="component-header">
+                            <h3 class="component-title">Assignments</h3>
+                            <span class="component-weight">30%</span>
+                        </div>
+                        <div class="component-actions">
+                            <button class="btn" onclick="editComponent('assignments')">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn" onclick="uploadGrades('assignments')">
+                                <i class="fas fa-upload"></i>
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline" onclick="addComponent()">
+                    <i class="fas fa-plus"></i>
+                    Add Component
+                </button>
+            </div>
+
+            <!-- Grade Sheet -->
+            <div class="grade-sheet">
+                <div class="sheet-header">
+                    <h2 class="section-title">Grade Sheet</h2>
+                    <div class="sheet-actions">
+                        <button class="btn" onclick="exportGrades()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <button class="btn btn-primary" onclick="saveChanges()">
+                            <i class="fas fa-save"></i>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+
+                <table class="grade-table">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Midterm (30%)</th>
+                            <th>Final (40%)</th>
+                            <th>Assignments (30%)</th>
+                            <th>Total</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gradeTableBody">
+                        <tr>
+                            <td>CS2025001</td>
+                            <td><a href="student-profile.html?id=CS2025001" style="color: #3b82f6; text-decoration: none;">John Smith</a></td>
+                            <td><input type="number" class="grade-input" value="85" onchange="calculateGrade(this)"></td>
+                            <td><input type="number" class="grade-input" value="92" onchange="calculateGrade(this)"></td>
+                            <td><input type="number" class="grade-input" value="88" onchange="calculateGrade(this)"></td>
+                            <td class="total-grade">88.6</td>
+                            <td><span class="grade-badge grade-a">A</span></td>
+                        </tr>
+                        <tr>
+                            <td>CS2025002</td>
+                            <td><a href="student-profile.html?id=CS2025002" style="color: #3b82f6; text-decoration: none;">Emma Johnson</a></td>
+                            <td><input type="number" class="grade-input" value="78" onchange="calculateGrade(this)"></td>
+                            <td><input type="number" class="grade-input" value="84" onchange="calculateGrade(this)"></td>
+                            <td><input type="number" class="grade-input" value="90" onchange="calculateGrade(this)"></td>
+                            <td class="total-grade">84.2</td>
+                            <td><span class="grade-badge grade-b">B+</span></td>
+                        </tr>
+                        <tr>
+                            <td>CS2025003</td>
+                            <td><a href="student-profile.html?id=CS2025003" style="color: #3b82f6; text-decoration: none;">Michael Brown</a></td>
+                            <td><input type="number" class="grade-input" value="92" onchange="calculateGrade(this)"></td>
+                            <td><input type="number" class="grade-input" value="88" onchange="calculateGrade(this)"></td>
+                            <td><input type="number" class="grade-input" value="85" onchange="calculateGrade(this)"></td>
+                            <td class="total-grade">88.2</td>
+                            <td><span class="grade-badge grade-a">A-</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Grade calculation logic
+        function calculateGrade(input) {
+            const row = input.closest('tr');
+            const inputs = row.querySelectorAll('.grade-input');
+            const weights = [0.3, 0.4, 0.3]; // Midterm 30%, Final 40%, Assignments 30%
+            
+            let total = 0;
+            inputs.forEach((inp, index) => {
+                const value = parseFloat(inp.value) || 0;
+                total += value * weights[index];
+            });
+            
+            // Update total
+            const totalCell = row.querySelector('.total-grade');
+            totalCell.textContent = total.toFixed(1);
+            
+            // Update grade badge
+            const gradeBadge = row.querySelector('.grade-badge');
+            const gradeInfo = getLetterGrade(total);
+            gradeBadge.textContent = gradeInfo.letter;
+            gradeBadge.className = `grade-badge ${gradeInfo.class}`;
+        }
+
+        function getLetterGrade(score) {
+            if (score >= 90) return { letter: 'A', class: 'grade-a' };
+            if (score >= 85) return { letter: 'A-', class: 'grade-a' };
+            if (score >= 80) return { letter: 'B+', class: 'grade-b' };
+            if (score >= 75) return { letter: 'B', class: 'grade-b' };
+            if (score >= 70) return { letter: 'B-', class: 'grade-b' };
+            if (score >= 65) return { letter: 'C+', class: 'grade-c' };
+            if (score >= 60) return { letter: 'C', class: 'grade-c' };
+            return { letter: 'F', class: 'grade-f' };
+        }
+
+        // Component management
+        function editComponent(type) {
+            alert(`Edit ${type} component`);
+            // Here you would open a modal or navigate to edit page
+        }
+
+        function uploadGrades(type) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.csv,.xlsx';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    alert(`Uploading grades for ${type}: ${file.name}`);
+                    // Here you would handle file upload
+                }
+            };
+            input.click();
+        }
+
+        function addComponent() {
+            const name = prompt('Enter component name:');
+            const weight = prompt('Enter weight percentage (0-100):');
+            
+            if (name && weight) {
+                alert(`Added component: ${name} (${weight}%)`);
+                // Here you would add the component to the grid
+            }
+        }
+
+        function exportGrades() {
+            alert('Exporting grades to CSV...');
+            // Here you would generate and download CSV file
+        }
+
+        function saveChanges() {
+            alert('Grades saved successfully!');
+            // Here you would send data to backend
+        }
+
+        // Backend integration functions
+        async function loadGrades() {
+            try {
+                const response = await fetch('/api/grades');
+                const data = await response.json();
+                // Update table with data
+                console.log('Grades loaded:', data);
+            } catch (error) {
+                console.error('Error loading grades:', error);
+            }
+        }
+
+        async function saveGradesToBackend() {
+            const grades = [];
+            const rows = document.querySelectorAll('#gradeTableBody tr');
+            
+            rows.forEach(row => {
+                const studentId = row.cells[0].textContent;
+                const inputs = row.querySelectorAll('.grade-input');
+                grades.push({
+                    studentId,
+                    midterm: parseFloat(inputs[0].value) || 0,
+                    final: parseFloat(inputs[1].value) || 0,
+                    assignments: parseFloat(inputs[2].value) || 0
+                });
+            });
+
+            try {
+                const response = await fetch('/api/grades', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(grades)
+                });
+                
+                if (response.ok) {
+                    alert('Grades saved successfully!');
+                } else {
+                    throw new Error('Failed to save grades');
+                }
+            } catch (error) {
+                console.error('Error saving grades:', error);
+                alert('Error saving grades. Please try again.');
+            }
+        }
+
+        // Load grades on page load
+        document.addEventListener('DOMContentLoaded', loadGrades);
+    </script>
+</body>
+</html>

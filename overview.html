@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLink - Courses Overview</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.875rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            color: #64748b;
+            font-size: 1.25rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 1.5rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .nav-item.active {
+            background: #eff6ff;
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.users {
+            background: #eff6ff;
+            color: #3b82f6;
+        }
+
+        .stat-icon.courses {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .stat-icon.grades {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .stat-icon.attendance {
+            background: #fdf2f8;
+            color: #ec4899;
+        }
+
+        .stat-content h3 {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-number {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .stat-change.positive {
+            color: #16a34a;
+        }
+
+        .stat-change.negative {
+            color: #dc2626;
+        }
+
+        .stat-change.neutral {
+            color: #64748b;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .course-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .course-code {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .course-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .course-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-stat .label {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .course-stat .value {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">
+                <span>EduLink</span>
+                <span class="logo-subtitle">Connecting Education</span>
+            </div>
+        </div>
+        
+        <div class="header-controls">
+            <select class="header-select">
+                <option>Advanced Database Systems - CS401</option>
+                <option>Web Development - CS301</option>
+                <option>Data Structures - CS201</option>
+            </select>
+            <select class="header-select">
+                <option>Spring 2025</option>
+                <option>Fall 2024</option>
+                <option>Summer 2024</option>
+            </select>
+        </div>
+        
+        <div class="user-info">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop&crop=face" alt="Prof. Sarah Wilson" class="user-avatar">
+                <div class="user-details">
+                    <h4>Prof. Sarah Wilson</h4>
+                    <p>Computer Science Dept.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="overview.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Courses Overview</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-star"></i>
+                <span>Grades Management</span>
+            </a>
+            <a href="attendance.html" class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Attendance QR</span>
+            </a>
+            <a href="students.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Students List</span>
+            </a>
+            <a href="notifications.html" class="nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Send Notifications</span>
+            </a>
+            <a href="add-course.html" class="nav-item">
+                <i class="fas fa-plus"></i>
+                <span>Add New Course</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Courses Overview</h1>
+                <p class="page-subtitle">Monitor your course performance and statistics</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total Students</h3>
+                        <div class="stat-number">342</div>
+                        <div class="stat-change positive">+12 this semester</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon courses">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Active Courses</h3>
+                        <div class="stat-number">8</div>
+                        <div class="stat-change neutral">Same as last semester</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon grades">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Average Grade</h3>
+                        <div class="stat-number">B+</div>
+                        <div class="stat-change positive">+0.3 from last term</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon attendance">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Attendance Rate</h3>
+                        <div class="stat-number">87%</div>
+                        <div class="stat-change negative">-2% from last week</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Grid -->
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Advanced Database Systems</h3>
+                        </div>
+                        <span class="course-code">CS401</span>
+                    </div>
+                    <div class="course-stats">
+                        <div class="course-stat">
+                            <span class="label">Students:</span>
+                            <span class="value">45</span>
+                        </div>
+                        <div class="course-stat">
+                            <span class="label">Avg Grade:</span>
+                            <span class="value">A-</span>
+                        </div>
+                        <div class="course-stat">
+                            <span class="label">Attendance:</span>
+                            <span class="value">89%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Web Development</h3>
+                        </div>
+                        <span class="course-code">CS301</span>
+                    </div>
+                    <div class="course-stats">
+                        <div class="course-stat">
+                            <span class="label">Students:</span>
+                            <span class="value">62</span>
+                        </div>
+                        <div class="course-stat">
+                            <span class="label">Avg Grade:</span>
+                            <span class="value">B+</span>
+                        </div>
+                        <div class="course-stat">
+                            <span class="label">Attendance:</span>
+                            <span class="value">92%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Data Structures</h3>
+                        </div>
+                        <span class="course-code">CS201</span>
+                    </div>
+                    <div class="course-stats">
+                        <div class="course-stat">
+                            <span class="label">Students:</span>
+                            <span class="value">38</span>
+                        </div>
+                        <div class="course-stat">
+                            <span class="label">Avg Grade:</span>
+                            <span class="value">B</span>
+                        </div>
+                        <div class="course-stat">
+                            <span class="label">Attendance:</span>
+                            <span class="value">85%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Load overview data
+        async function loadOverviewData() {
+            try {
+                const response = await fetch('/api/overview');
+                const data = await response.json();
+                updateOverviewStats(data);
+            } catch (error) {
+                console.error('Error loading overview data:', error);
+            }
+        }
+
+        function updateOverviewStats(data) {
+            // Update stats cards with real data
+            console.log('Overview data loaded:', data);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadOverviewData);
+    </script>
+</body>
+</html>

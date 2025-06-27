@@ -440,10 +440,6 @@
                 <i class="fas fa-bell"></i>
                 <span>Send Notifications</span>
             </a>
-            <a href="/add-course.html" class="nav-item">
-                <i class="fas fa-plus"></i>
-                <span>Add New Course</span>
-            </a>
         </nav>
 
         <!-- Main Content -->
@@ -453,7 +449,8 @@
                 Back to Students List
             </a>
 
-            <div class="profile-header">
+            <div class="profile-header" style="position: relative;">
+                <span class="attendance-status status-present" style="position: absolute; top: 10px; right: 10px;">Present</span>
                 <img src="https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop&crop=face" alt="John Smith" class="profile-avatar" id="profileAvatar">
                 <div class="profile-info">
                     <h1 id="profileName">John Smith</h1>
@@ -463,86 +460,10 @@
                         <span id="profileMajor">Major: Computer Science</span>
                         <span id="profileYear">Year: Junior</span>
                     </div>
-                    <div class="profile-stats">
-                        <div class="profile-stat">
-                            <div class="value" id="overallGrade">A</div>
-                            <div class="label">Overall Grade</div>
-                        </div>
-                        <div class="profile-stat">
-                            <div class="value" id="attendanceRate">95%</div>
-                            <div class="label">Attendance</div>
-                        </div>
-                        <div class="profile-stat">
-                            <div class="value" id="coursesEnrolled">3</div>
-                            <div class="label">Courses</div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="profile-content">
-                <div class="profile-section">
-                    <h2 class="section-title">
-                        <i class="fas fa-star"></i>
-                        Grades
-                    </h2>
-                    <table class="grades-table">
-                        <thead>
-                            <tr>
-                                <th>Component</th>
-                                <th>Score</th>
-                                <th>Grade</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gradesTableBody">
-                            <tr>
-                                <td>Midterm Exam</td>
-                                <td>85/100</td>
-                                <td><span class="grade-badge grade-b">B+</span></td>
-                            </tr>
-                            <tr>
-                                <td>Final Exam</td>
-                                <td>92/100</td>
-                                <td><span class="grade-badge grade-a">A-</span></td>
-                            </tr>
-                            <tr>
-                                <td>Assignments</td>
-                                <td>88/100</td>
-                                <td><span class="grade-badge grade-b">B+</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="profile-section">
-                    <h2 class="section-title">
-                        <i class="fas fa-calendar-check"></i>
-                        Recent Attendance
-                    </h2>
-                    <div id="attendanceList">
-                        <div class="attendance-item">
-                            <span class="attendance-date">March 15, 2025</span>
-                            <span class="attendance-status status-present">Present</span>
-                        </div>
-                        <div class="attendance-item">
-                            <span class="attendance-date">March 13, 2025</span>
-                            <span class="attendance-status status-present">Present</span>
-                        </div>
-                        <div class="attendance-item">
-                            <span class="attendance-date">March 11, 2025</span>
-                            <span class="attendance-status status-late">Late</span>
-                        </div>
-                        <div class="attendance-item">
-                            <span class="attendance-date">March 8, 2025</span>
-                            <span class="attendance-status status-present">Present</span>
-                        </div>
-                        <div class="attendance-item">
-                            <span class="attendance-date">March 6, 2025</span>
-                            <span class="attendance-status status-absent">Absent</span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="profile-section full-width">
                     <h2 class="section-title">
                         <i class="fas fa-address-book"></i>

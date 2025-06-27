@@ -437,10 +437,6 @@
                 <i class="fas fa-bell"></i>
                 <span>Send Notifications</span>
             </a>
-            <a href="/add-course.html" class="nav-item">
-                <i class="fas fa-plus"></i>
-                <span>Add New Course</span>
-            </a>
         </nav>
 
         <!-- Main Content -->
@@ -450,8 +446,8 @@
                 <p class="page-subtitle">Generate QR codes for student attendance tracking</p>
             </div>
 
-            <div class="qr-container">
-                <div class="qr-card">
+            <div class="qr-container" style="grid-template-columns: 1fr;">
+                <div class="qr-card" style=" display: block;"> 
                     <div class="qr-header">
                         <h3 class="qr-title">Today's Attendance</h3>
                         <span class="qr-date" id="currentDate">March 15, 2025</span>
@@ -478,7 +474,29 @@
                     </div>
                 </div>
 
-                <div class="attendance-list">
+                <div class="attendance" style="background-color: #fff; padding: 1rem; margin: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <h2 style="padding-bottom: 0.5rem;">Today's Attendance</h2>
+                    <div class="numbers" style="display: flex; justify-content: space-between; width: 50%; font-weight: bold;">
+                        <div class="number" style="display: flex; flex-direction: column; align-items: center;">
+                            <span class="number-value" id="TotalCount" style="color: black;">25</span>
+                            <span class="number-title">Total Students</span>
+                        </div>
+                        <div class="number" style="display: flex; flex-direction: column; align-items: center;">
+                            <span class="number-value" id="TotalCount" style="color: green;">38</span>
+                            <span class="number-title">Present</span>
+                        </div>
+                        <div class="number" style="display: flex; flex-direction: column; align-items: center;">
+                            <span class="number-value" id="TotalCount" style="color: red;">7</span>
+                            <span class="number-title">Absent</span>
+                        </div>
+                    </div>
+                    <!-- progress bar -->
+                    <div class="progress-bar" >
+                        <progress max="75" value="50" class="progress" id="progressBar" style="width: 50%;"></progress>
+                    </div>
+                </div>
+
+                <!-- <div class="attendance-list">
                     <h3 class="attendance-title">Recent Attendance</h3>
                     <div class="attendance-items" id="attendanceItems">
                         <div class="attendance-item">
@@ -507,7 +525,7 @@
                             <span class="attendance-status status-late">Late</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </main>
     </div>
